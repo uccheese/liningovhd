@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lining Division — Operations Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F0F0E;
+    --bg2: #161614;
+    --bg3: #1E1E1B;
+    --bg4: #252521;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.13);
+    --text: #F0EFE8;
+    --text2: #9E9D96;
+    --text3: #5C5C57;
+    --blue: #4A9EE8;
+    --blue-dim: rgba(74,158,232,0.12);
+    --blue-border: rgba(74,158,232,0.3);
+    --green: #4DBD8A;
+    --green-dim: rgba(77,189,138,0.1);
+    --amber: #E8A832;
+    --amber-dim: rgba(232,168,50,0.1);
+    --red: #E85A4A;
+    --red-dim: rgba(232,90,74,0.1);
+    --purple: #9B7FE8;
+    --purple-dim: rgba(155,127,232,0.1);
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,15,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 17px; color: var(--text); letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--blue); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    font-size: 13px; color: var(--text2); padding: 6px 12px;
+    border-radius: 6px; cursor: pointer; border: none; background: none;
+    transition: color 0.15s, background 0.15s;
+    font-family: var(--font-body);
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg3); }
+  .nav-link.active { color: var(--text); background: var(--bg3); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--blue); text-transform: uppercase; margin-bottom: 1.25rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; width: 32px; height: 0.5px; background: var(--blue-border);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 6vw, 58px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { color: var(--blue); font-style: italic; }
+  .hero-sub { font-size: 16px; color: var(--text2); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px; max-width: 700px; margin: 0 auto;
+  }
+  .hero-stat {
+    background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-lg);
+    padding: 1.25rem 1rem; text-align: center;
+  }
+  .hero-stat-val { font-family: var(--font-display); font-size: 28px; color: var(--text); }
+  .hero-stat-label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* SECTIONS */
+  section { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; border-top: 0.5px solid var(--border); }
+  .section-header { margin-bottom: 2rem; }
+  .section-number { font-size: 12px; color: var(--blue); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .section-title { font-family: var(--font-display); font-size: 28px; letter-spacing: -0.02em; color: var(--text); margin-bottom: 8px; }
+  .section-desc { font-size: 14px; color: var(--text2); max-width: 560px; line-height: 1.7; }
+
+  /* CARDS */
+  .card { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; }
+  .card.featured { border-color: var(--blue-border); background: rgba(74,158,232,0.04); }
+  .card.warn { border-color: rgba(232,168,50,0.3); background: var(--amber-dim); }
+  .card.danger { border-color: rgba(232,90,74,0.3); background: var(--red-dim); }
+  .card.success { border-color: rgba(77,189,138,0.3); background: var(--green-dim); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+
+  /* BADGE */
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); border: 0.5px solid var(--blue-border); }
+  .badge-green { background: var(--green-dim); color: var(--green); border: 0.5px solid rgba(77,189,138,0.25); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); border: 0.5px solid rgba(232,168,50,0.25); }
+  .badge-red { background: var(--red-dim); color: var(--red); border: 0.5px solid rgba(232,90,74,0.25); }
+  .badge-purple { background: var(--purple-dim); color: var(--purple); border: 0.5px solid rgba(155,127,232,0.25); }
+
+  /* TABLE ROWS */
+  .row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
+  .row:last-child { border-bottom: none; }
+  .row-left { flex: 1; }
+  .row-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .row-sub { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .row-right { text-align: right; flex-shrink: 0; }
+  .row-val { font-size: 14px; font-weight: 500; color: var(--text); }
+  .row-val-sub { font-size: 12px; color: var(--text2); }
+
+  /* OVERHEAD TABLE */
+  .oh-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .oh-table th { text-align: left; font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px; border-bottom: 0.5px solid var(--border); }
+  .oh-table td { padding: 11px 12px; border-bottom: 0.5px solid var(--border); color: var(--text); vertical-align: middle; }
+  .oh-table tr:last-child td { border-bottom: none; }
+  .oh-table tr.total-row td { font-weight: 500; color: var(--blue); border-top: 0.5px solid var(--border2); }
+
+  /* TIER ROWS */
+  .tier-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 0.5px solid var(--border); }
+  .tier-row:last-child { border-bottom: none; }
+  .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tier-name { font-size: 13px; font-weight: 500; color: var(--text); width: 90px; flex-shrink: 0; }
+  .tier-threshold { font-size: 13px; color: var(--text2); flex: 1; }
+  .tier-payout { font-size: 14px; font-weight: 500; text-align: right; }
+
+  /* SLIDERS */
+  .slider-section { margin-bottom: 2rem; }
+  .slider-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .slider-label { font-size: 13px; color: var(--text2); width: 200px; flex-shrink: 0; }
+  .slider-val { font-size: 13px; font-weight: 500; color: var(--text); width: 80px; text-align: right; flex-shrink: 0; }
+
+  input[type="range"] {
+    flex: 1; -webkit-appearance: none; appearance: none;
+    height: 4px; background: var(--bg4); border-radius: 2px; outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--blue); cursor: pointer;
+    border: 2px solid var(--bg); transition: transform 0.1s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  /* P&L summary table indent */
+  #pnl-summary-body td { padding: 9px 12px; }
+  input[type="checkbox"] { width: 17px; height: 17px; cursor: pointer; accent-color: var(--blue); }
+
+  /* RESULT BOX */
+  .result-box {
+    background: var(--bg4); border: 0.5px solid var(--border2);
+    border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
+  }
+  .result-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .result-big { font-family: var(--font-display); font-size: 40px; color: var(--text); letter-spacing: -0.02em; line-height: 1; }
+  .result-sub { font-size: 13px; color: var(--text2); margin-top: 6px; }
+  .result-right { text-align: right; }
+  .result-pct { font-family: var(--font-display); font-size: 32px; color: var(--blue); }
+
+  /* PILL BAR */
+  .pill-track { height: 6px; background: var(--bg4); border-radius: 3px; overflow: hidden; margin-top: 1rem; }
+  .pill-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease, background 0.4s; }
+
+  /* BREAKDOWN */
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-row.total { font-size: 15px; font-weight: 500; border-top: 0.5px solid var(--border2); margin-top: 4px; padding-top: 12px; }
+  .breakdown-label { color: var(--text2); }
+  .breakdown-val { color: var(--text); font-weight: 500; }
+
+  /* SCENARIO CARDS */
+  .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1.5rem; }
+  .scenario { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .scenario.best { border-color: var(--blue-border); }
+  .scenario-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 500; }
+  .scenario-bonus { font-family: var(--font-display); font-size: 26px; color: var(--text); }
+  .scenario-comp { font-size: 14px; font-weight: 500; margin-top: 4px; }
+  .scenario-desc { font-size: 12px; color: var(--text3); margin-top: 6px; line-height: 1.5; }
+
+  /* HIGHLIGHT BOX */
+  .highlight { border-left: 2px solid var(--blue); padding: 12px 16px; border-radius: 0 var(--radius) var(--radius) 0; background: var(--blue-dim); margin: 1rem 0; }
+  .highlight.warn { border-left-color: var(--amber); background: var(--amber-dim); }
+  .highlight.danger { border-left-color: var(--red); background: var(--red-dim); }
+  .highlight-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .highlight-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* COMP BAR */
+  .comp-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .comp-bar-label { font-size: 13px; color: var(--text2); width: 140px; flex-shrink: 0; }
+  .comp-bar-track { flex: 1; background: var(--bg4); border-radius: 3px; height: 22px; overflow: hidden; }
+  .comp-bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 500; }
+  .comp-bar-val { font-size: 13px; font-weight: 500; color: var(--text); width: 70px; text-align: right; }
+
+  /* GATE ITEMS */
+  .gate-item { display: flex; gap: 12px; padding: 11px 0; border-bottom: 0.5px solid var(--border); }
+  .gate-item:last-child { border-bottom: none; }
+  .gate-icon { font-size: 16px; color: var(--text3); flex-shrink: 0; margin-top: 2px; width: 18px; text-align: center; }
+  .gate-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .gate-body { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.6; }
+
+  /* DIVIDER */
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 2rem 0; }
+
+  /* FOOTER */
+  footer {
+    max-width: 900px; margin: 0 auto; padding: 2rem;
+    border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-brand { font-family: var(--font-display); font-size: 15px; color: var(--text2); }
+  .footer-note { font-size: 12px; color: var(--text3); }
+
+  /* TABS */
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--bg3); border-radius: var(--radius); padding: 4px; border: 0.5px solid var(--border); }
+  .tab-btn { flex: 1; padding: 8px 12px; border: none; border-radius: 7px; font-size: 13px; font-family: var(--font-body); font-weight: 500; color: var(--text2); background: transparent; cursor: pointer; transition: all 0.15s; }
+  .tab-btn.active { background: var(--bg4); color: var(--text); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    .grid-2, .grid-3, .scenario-grid { grid-template-columns: 1fr; }
+    .result-box { flex-direction: column; }
+    nav .nav-links { display: none; }
+    .slider-label { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Lining Division <span>Playbook</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="scrollTo('overview')">Overview</button>
+    <button class="nav-link" onclick="scrollTo('overhead')">Overhead</button>
+    <button class="nav-link" onclick="scrollTo('team')">Team</button>
+    <button class="nav-link" onclick="scrollTo('subwork')">Sub work</button>
+    <button class="nav-link" onclick="scrollTo('bonus')">Taylor bonus</button>
+    <button class="nav-link" onclick="scrollTo('pnl')">P&L model</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div class="hero-eyebrow">Lining Division · Operations Analysis</div>
+  <h1>$8.5M Revenue<br><em>Surge Playbook</em></h1>
+  <p class="hero-sub">Overhead framework, team strategy, subcontractor bid discipline, and Taylor Lobb compensation structure — built for the current influx.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-val">$8.5M</div>
+      <div class="hero-stat-label">Revenue target by Oct</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">13–15%</div>
+      <div class="hero-stat-label">Target overhead rate</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">6 crews</div>
+      <div class="hero-stat-label">3 CIPP · 1 MH · 2 C&TV</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">$1.0M</div>
+      <div class="hero-stat-label">Anderson SC liquidity</div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERHEAD -->
+<section id="overhead" class="reveal">
+  <div class="section-header">
+    <div class="section-number">01 — Overhead Salary</div>
+    <div class="section-title">Shop payroll overhead model</div>
+    <div class="section-desc">Focused purely on overhead salary cost — what these people cost as a % of revenue, and how that % compresses as you grow. April actuals used as the baseline.</div>
+  </div>
+
+  <!-- APRIL CONTEXT BANNER -->
+  <div class="highlight warn" style="margin-bottom:1.5rem">
+    <div class="highlight-title">April baseline — acknowledged bad month</div>
+    <div class="highlight-body">April revenue: $753,468 &nbsp;·&nbsp; Named salary OH payroll: $43,167/mo &nbsp;·&nbsp; + Charles Stoy: $5,850 &nbsp;·&nbsp; + Danny Davis: $7,410 &nbsp;·&nbsp; + Bench time (~2% rev): ~$15,069 &nbsp;·&nbsp; <strong>Normalized total: ~$71,496/mo (9.5%)</strong> &nbsp;·&nbsp; Joe & Megan excluded — captured in 6.8% shared cost.</div>
+  </div>
+
+  <!-- PEOPLE TABLE -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Overhead payroll roster</div>
+  <div class="card" style="margin-bottom:1.5rem">
+    <table class="oh-table">
+      <thead><tr><th>Person</th><th>Role</th><th>Monthly cost</th><th>Annual cost</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Rusty Johnston</td><td>Dir. Lining BD</td><td>$10,417</td><td>$125,000</td><td>100% lining</td></tr>
+        <tr><td>Taylor Lobb</td><td>Field Ops Manager</td><td>$9,833</td><td>$118,000</td><td>proposed rate</td></tr>
+        <tr><td>Riley Chon</td><td>Lead PM</td><td>$11,667</td><td>$140,000</td><td>100% lining</td></tr>
+        <tr><td>Veronica Medina</td><td>Asst PM</td><td>$5,417</td><td>$65,000</td><td>100% lining</td></tr>
+        <tr><td>Dominic Johnson</td><td>PM</td><td>$5,833</td><td>$70,000</td><td>100% lining</td></tr>
+        <tr><td>Charles Stoy</td><td>Mechanic / Tech</td><td>$5,850</td><td>$70,200</td><td>$30/hr · 45 hrs/wk</td></tr>
+        <tr><td>Danny Davis</td><td>CDL-A Driver / Shop</td><td>$7,410</td><td>$88,920</td><td>$38/hr · 45 hrs/wk</td></tr>
+        <tr style="border-top:1px solid var(--border2)"><td>Bench time (field crew)</td><td>Non-billable field labor</td><td id="oh-bench-mo">$15,069</td><td id="oh-bench-ann">$180,828</td><td>~2% of revenue — variable</td></tr>
+        <tr class="total-row"><td>Total overhead payroll</td><td></td><td id="oh-total-mo">$71,496</td><td id="oh-total-ann">$857,952</td><td>normalized basis</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--text3);margin-top:10px;line-height:1.6">Joe Fiorante and Megan Smith excluded — their lining allocations are captured in the 6.8% shared cost line. Bench time moves with revenue; all other lines are fixed.</div>
+  </div>
+
+  <!-- REVENUE SLIDER + BENCH TOGGLE -->
+  <div class="card" style="margin-bottom:1.5rem">
+    <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px">Controls</div>
+    <div class="slider-row">
+      <div class="slider-label">Monthly revenue</div>
+      <input type="range" min="300000" max="1500000" step="25000" value="753468" id="oh-rev-slider" oninput="calcOH()">
+      <div class="slider-val" id="oh-rev-val">$753K / mo</div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);padding-left:214px;margin-top:-6px;margin-bottom:16px">Annual run rate: <span id="oh-annual-val" style="color:var(--text2);font-weight:500">$9.04M</span></div>
+    <div class="slider-row">
+      <div class="slider-label">Bench time % of revenue</div>
+      <input type="range" min="0" max="6" step="0.5" value="2" id="oh-bench-slider" oninput="calcOH()">
+      <div class="slider-val" id="oh-bench-val">2.0%</div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);padding-left:214px;margin-top:-4px">Normalized: 2% &nbsp;·&nbsp; Slow month (April-like): 4–5% &nbsp;·&nbsp; Busy surge: 1–1.5%</div>
+  </div>
+
+  <!-- LIVE RESULT CARDS -->
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Monthly revenue</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)" id="oh-card-monthly">$753K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px" id="oh-card-annual-sub">$9.04M annually</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Fixed OH payroll / mo</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)" id="oh-card-fixed">$56K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">named people + Charles + Danny</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Total OH payroll / mo</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)" id="oh-card-payroll">$71K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">incl. bench time</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">OH payroll % of revenue</div>
+      <div style="font-family:var(--font-display);font-size:24px;" id="oh-card-pct">9.5%</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px" id="oh-pct-signal">Healthy range</div>
+    </div>
+  </div>
+
+  <!-- KEY INSIGHT BOX -->
+  <div class="highlight" style="margin-bottom:1.5rem" id="oh-insight-box">
+    <div class="highlight-title" id="oh-insight-title">Fixed payroll is your anchor</div>
+    <div class="highlight-body" id="oh-insight-body">Your named salary + Charles + Danny comes to $56,177/mo and doesn't move regardless of revenue. Bench time is the only variable piece. At surge revenue ($1M+/mo) your total OH payroll % drops below 7% automatically — no cost cuts needed.</div>
+  </div>
+
+  <!-- % COMPRESSION VISUAL -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">OH payroll % at revenue milestones (at current bench time setting)</div>
+  <div class="card" style="margin-bottom:1.5rem">
+    <div id="compression-bars"></div>
+    <div style="font-size:11px;color:var(--text3);margin-top:12px">Fixed payroll ($56,177) doesn't change. Only bench time moves with revenue. Every dollar of growth compresses the % automatically.</div>
+  </div>
+
+  <!-- GROWTH SCENARIO TABLE -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Full scenario table</div>
+  <div class="card">
+    <table class="oh-table">
+      <thead>
+        <tr><th>Monthly revenue</th><th>Annual run rate</th><th>Fixed OH payroll</th><th>Bench time</th><th>Total OH payroll</th><th>% of revenue</th></tr>
+      </thead>
+      <tbody id="oh-scenario-rows"></tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- TEAM -->
+<section id="team" class="reveal">
+  <div class="section-header">
+    <div class="section-number">02 — Team</div>
+    <div class="section-title">PM capacity & team assessment</div>
+    <div class="section-desc">Honest breakdown of current PM bench and what needs to change before the surge hits full stride.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div class="row">
+      <div class="row-left">
+        <div class="row-name">Rusty Johnston &nbsp;<span class="badge badge-green">solid</span></div>
+        <div class="row-sub">Director of Lining Business Development — anchor on the BD side. Protect his time for client and bid work as surge volume arrives.</div>
+      </div>
+      <div class="row-right"><div class="row-val">$125K</div><div class="row-val-sub">100% lining</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left">
+        <div class="row-name">Riley Chon &nbsp;<span class="badge badge-green">solid</span></div>
+        <div class="row-sub">Lead PM. Your anchor in project management. Risk: gets overloaded if not given support. Must shed 3–4 jobs to a new hire immediately on surge.</div>
+      </div>
+      <div class="row-right"><div class="row-val">$140K</div><div class="row-val-sub">100% lining</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left">
+        <div class="row-name">Taylor Lobb &nbsp;<span class="badge badge-amber">retention risk</span></div>
+        <div class="row-sub">Field Operations Manager — underpaid at $100K managing 6 crews heading into $8.5M surge. Address comp this week before workload lands.</div>
+      </div>
+      <div class="row-right"><div class="row-val" style="color:var(--amber)">$100K →</div><div class="row-val-sub">needs $118–120K</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left">
+        <div class="row-name">Dominic Johnson &nbsp;<span class="badge badge-blue">developing</span></div>
+        <div class="row-sub">Good young employee, not yet full PM. Assign 2–3 smaller CCTV/MH jobs independently with Riley reviewing. Don't throw into sub coordination yet.</div>
+      </div>
+      <div class="row-right"><div class="row-val">$70K</div><div class="row-val-sub">100% lining</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left">
+        <div class="row-name">Veronica Medina &nbsp;<span class="badge badge-red">decide now</span></div>
+        <div class="row-sub">Can run smaller jobs but lacks consistency, work ethic, commitment. With this volume arriving, you need a PM position that runs independently — not one that needs management. Hire the new PM regardless; that protects you either way.</div>
+      </div>
+      <div class="row-right"><div class="row-val">$65K</div><div class="row-val-sub">100% lining</div></div>
+    </div>
+  </div>
+
+  <div class="highlight warn">
+    <div class="highlight-title">New PM hire — do this now</div>
+    <div class="highlight-body">5–10 years CIPP/CCTV/pipeline rehab experience. Sub management a plus. Target $85–100K base. Should own 3–4 jobs off Riley's plate within 60 days. If Walmart CCTV materializes, this person runs point alongside Riley — that alone justifies the hire.</div>
+  </div>
+
+  <div style="margin-top:1.5rem">
+    <div style="font-size:13px;font-weight:500;color:var(--text2);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em;font-size:12px">PM capacity by scenario</div>
+    <div class="card">
+      <div class="row">
+        <div class="row-left"><div class="row-name">Today (Riley + Dom + Veronica)</div><div class="row-sub">Veronica unreliable, Dom needs supervision, Riley approaching ceiling</div></div>
+        <div class="row-right"><div class="row-val" style="color:var(--red)">~6–8 jobs</div><div class="row-val-sub"><span class="badge badge-red">high risk</span></div></div>
+      </div>
+      <div class="row">
+        <div class="row-left"><div class="row-name">Add 1 strong PM, keep Veronica</div><div class="row-sub">Veronica still a wildcard but contained to smaller jobs</div></div>
+        <div class="row-right"><div class="row-val" style="color:var(--amber)">~10–13 jobs</div><div class="row-val-sub"><span class="badge badge-amber">medium risk</span></div></div>
+      </div>
+      <div class="row">
+        <div class="row-left"><div class="row-name">Replace Veronica + add 1 PM</div><div class="row-sub">Riley leads, 2 full PMs independent, Dom develops under Riley</div></div>
+        <div class="row-right"><div class="row-val" style="color:var(--green)">~11–14 jobs</div><div class="row-val-sub"><span class="badge badge-green">managed</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUB WORK -->
+<section id="subwork" class="reveal">
+  <div class="section-header">
+    <div class="section-number">03 — Subcontracted work</div>
+    <div class="section-title">Sub work bid discipline</div>
+    <div class="section-desc">When you sub out work, revenue includes the sub's cost but gross margin is much thinner. The rules below protect the model.</div>
+  </div>
+
+  <div class="highlight danger" style="margin-bottom:1.5rem">
+    <div class="highlight-title">The core risk</div>
+    <div class="highlight-body">If you apply your self-perform overhead rate to subbed revenue, you'll be over-allocating phantom margin. Your fixed overhead doesn't shrink because a sub is doing the field work — but your gross margin on that revenue is 8–15%, not 35–50%. The difference has to be built into your bid, not assumed.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div class="row">
+      <div class="row-left"><div class="row-name">Self-perform CIPP, own C&TV, own MH</div><div class="row-sub">Full overhead rate applies — deploying your equipment, crews, and PM time.</div></div>
+      <div class="row-right"><div class="row-val" style="color:var(--blue)">13–15% OH</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left"><div class="row-name">Subcontracted field work</div><div class="row-sub">Reduced OH rate on sub revenue — mostly PM oversight and admin. But the 10–12% markup must be in the bid before submission.</div></div>
+      <div class="row-right"><div class="row-val" style="color:var(--amber)">5–8% OH + 10–12% markup in bid</div></div>
+    </div>
+    <div class="row">
+      <div class="row-left"><div class="row-name">CCTV (own crews) — C&TV</div><div class="row-sub">Moderate overhead. Lower materials intensity than CIPP but scheduling-heavy. Megan's video review time is a real cost — Walmart CCTV especially.</div></div>
+      <div class="row-right"><div class="row-val" style="color:var(--blue)">10–13% OH</div></div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;margin-top:1.5rem">Overhead costs that often get missed on sub work</div>
+  <div class="card">
+    <div class="gate-item">
+      <div class="gate-icon">⚙</div>
+      <div><div class="gate-title">Sub qualification & setup</div><div class="gate-body">Insurance verification, safety compliance, contract execution. 4–6 hours per new sub relationship. 3–5 subs for the surge = real admin cost against Rusty or Riley's time.</div></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📅</div>
+      <div><div class="gate-title">Schedule coordination</div><div class="gate-body">Subs don't self-schedule against your project commitments. PM time to coordinate 1 sub on a job = ~10–15% of that job's PM hours. More subs = more coordination overhead.</div></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📄</div>
+      <div><div class="gate-title">Invoice review & billing</div><div class="gate-body">Joe's controller time increases with sub invoices. Back-charging, pay app reviews, lien waiver management — 1–2 hours per sub per billing cycle.</div></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📹</div>
+      <div><div class="gate-title">Video review (Megan)</div><div class="gate-body">CCTV footage review is a fixed cost regardless of who ran the camera. If Walmart CCTV materializes, Megan's 50% lining allocation may need to flex — build that into OH contingency.</div></div>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:1rem">
+    <div class="highlight-title">The rule for Rusty and Riley</div>
+    <div class="highlight-body">Any job where you know you're subbing a portion: sub cost × 1.10–1.12 minimum before bid submission. Don't quote at your self-perform margin rate and then sub it. That's where contractors get crushed.</div>
+  </div>
+</section>
+
+<!-- BONUS CALCULATOR -->
+<section id="bonus" class="reveal">
+  <div class="section-header">
+    <div class="section-number">04 — Compensation · Field Operations</div>
+    <div class="section-title">Taylor Lobb bonus structure</div>
+    <div class="section-desc">Two-component bonus tied to division revenue and operational metrics. Base salary adjusting from $100K to $118K immediately. All bonus components require minimum 10% division net profit as a gate.</div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Proposed base</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)">$118K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">up from $100K</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Max bonus</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)">$20K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">at stretch target</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Target total comp</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--blue)">$128–138K</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">base + earned bonus</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Bonus as % of base</div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--text)">up to 17%</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">competitive for FOM role</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tiers')">Bonus tiers</button>
+    <button class="tab-btn" onclick="switchTab('calculator')">Live calculator</button>
+    <button class="tab-btn" onclick="switchTab('gates')">Gates & guardrails</button>
+    <button class="tab-btn" onclick="switchTab('market')">Market context</button>
+  </div>
+
+  <!-- TAB: TIERS -->
+  <div id="tab-tiers" class="tab-panel active">
+    <div class="card" style="margin-bottom:12px">
+      <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px">Component 1 — Division revenue &nbsp;<span class="badge badge-blue">60% of bonus · max $12K</span></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">Rewards Taylor for the output of the full field operation he manages. Tied to annual lining division revenue.</div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:#5C5C57"></div>
+        <div class="tier-name">Threshold</div>
+        <div class="tier-threshold">Division hits $6.5M annual revenue</div>
+        <div class="tier-payout" style="color:var(--text2)">$3,000</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:var(--blue)"></div>
+        <div class="tier-name">Target</div>
+        <div class="tier-threshold">Division hits $8.0M annual revenue</div>
+        <div class="tier-payout" style="color:var(--blue)">$7,200</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:var(--green)"></div>
+        <div class="tier-name">Stretch</div>
+        <div class="tier-threshold">Division hits $9.5M+ annual revenue</div>
+        <div class="tier-payout" style="color:var(--green)">$12,000</div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px">Component 2 — Operational metrics &nbsp;<span class="badge badge-purple">40% of bonus · max $8K</span></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">Rewards what Taylor directly controls — crew efficiency, safety, and retention. Prevents revenue at the expense of field chaos.</div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:var(--green)"></div>
+        <div class="tier-name" style="width:160px">Crew utilization</div>
+        <div class="tier-threshold">Billable crew days ≥ 85% of available days</div>
+        <div class="tier-payout" style="color:var(--green)">$2,700</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:var(--purple)"></div>
+        <div class="tier-name" style="width:160px">Safety record</div>
+        <div class="tier-threshold">Zero recordable incidents for the year</div>
+        <div class="tier-payout" style="color:var(--purple)">$2,700</div>
+      </div>
+      <div class="tier-row">
+        <div class="tier-dot" style="background:var(--amber)"></div>
+        <div class="tier-name" style="width:160px">Crew retention</div>
+        <div class="tier-threshold">≤ 20% crew turnover for the year</div>
+        <div class="tier-payout" style="color:var(--amber)">$2,600</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: CALCULATOR -->
+  <div id="tab-calculator" class="tab-panel">
+    <div class="slider-section">
+      <div class="slider-row">
+        <div class="slider-label">Annual division revenue</div>
+        <input type="range" min="5000000" max="12000000" step="100000" value="8500000" id="rev-slider">
+        <div class="slider-val" id="rev-val">$8.5M</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Division net profit margin</div>
+        <input type="range" min="0" max="30" step="1" value="14" id="t-profit-slider">
+        <div class="slider-val" id="t-profit-val">14%</div>
+      </div>
+      <div id="t-profit-gate-warn" style="display:none;margin-bottom:1rem">
+        <div class="highlight danger" style="margin:0"><div class="highlight-title">⚠ Profit gate not met</div><div class="highlight-body">Division net profit is below the 10% minimum threshold. No bonus components are payable until this gate is cleared.</div></div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Crew utilization</div>
+        <input type="range" min="60" max="100" step="1" value="87" id="util-slider">
+        <div class="slider-val" id="util-val">87%</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Recordable safety incidents</div>
+        <input type="range" min="0" max="5" step="1" value="0" id="safety-slider">
+        <div class="slider-val" id="safety-val">0</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding-left:214px">
+        <input type="checkbox" id="retention-check" checked>
+        <label for="retention-check" style="font-size:13px;color:var(--text2);cursor:pointer">Crew retention target met (≤ 20% turnover)</label>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div>
+        <div class="result-label">Estimated annual bonus</div>
+        <div class="result-big" id="total-bonus">$0</div>
+        <div class="result-sub" id="total-comp-line">Total comp: $118,000</div>
+      </div>
+      <div class="result-right">
+        <div class="result-label">Of max $20K</div>
+        <div class="result-pct" id="bonus-pct">0%</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px">earned</div>
+      </div>
+    </div>
+    <div class="pill-track" style="margin-bottom:1.5rem">
+      <div class="pill-fill" id="bonus-bar" style="width:0%;background:var(--blue)"></div>
+    </div>
+
+    <div class="card">
+      <div class="breakdown-row"><div class="breakdown-label">Base salary</div><div class="breakdown-val">$118,000</div></div>
+      <div class="breakdown-row"><div class="breakdown-label">Revenue component (60%)</div><div class="breakdown-val" id="rev-component">$0</div></div>
+      <div class="breakdown-row"><div class="breakdown-label">Crew utilization bonus</div><div class="breakdown-val" id="util-component">$0</div></div>
+      <div class="breakdown-row"><div class="breakdown-label">Safety bonus</div><div class="breakdown-val" id="safety-component">$0</div></div>
+      <div class="breakdown-row"><div class="breakdown-label">Retention bonus</div><div class="breakdown-val" id="retention-component">$0</div></div>
+      <div class="breakdown-row total"><div class="breakdown-label">Total compensation</div><div class="breakdown-val" style="color:var(--blue);font-size:16px" id="total-comp-val">$118,000</div></div>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario">
+        <div class="scenario-label">Underperform — Rev $6M, ops issues</div>
+        <div class="scenario-bonus">$3,000</div>
+        <div class="scenario-comp" style="color:var(--text2)">Total: $121K</div>
+        <div class="scenario-desc">Threshold revenue only, no ops bonuses earned</div>
+      </div>
+      <div class="scenario best">
+        <div style="margin-bottom:6px"><span class="badge badge-blue">Most likely</span></div>
+        <div class="scenario-label">On target — Rev $8.5M, clean ops</div>
+        <div class="scenario-bonus" style="color:var(--blue)">$15,200</div>
+        <div class="scenario-comp" style="color:var(--blue)">Total: $133K</div>
+        <div class="scenario-desc">Revenue target + all 3 ops metrics met</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">Stretch — Rev $9.5M+, excellent ops</div>
+        <div class="scenario-bonus" style="color:var(--green)">$20,000</div>
+        <div class="scenario-comp" style="color:var(--green)">Total: $138K</div>
+        <div class="scenario-desc">Full bonus earned — Walmart CCTV scenario</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: GATES -->
+  <div id="tab-gates" class="tab-panel">
+    <div class="card">
+      <div class="gate-item">
+        <div class="gate-icon">🔒</div>
+        <div><div class="gate-title">10% net profit gate — hard floor for all bonus components</div><div class="gate-body">The lining division must achieve a minimum 10% net profit margin before any bonus component is payable — revenue, utilization, safety, or retention. No exceptions. This protects the business from paying bonuses in a year where the division runs unprofitable.</div></div>
+      </div>
+      <div class="gate-item">
+        <div class="gate-icon">📊</div>
+        <div><div class="gate-title">Revenue component also requires minimum gross margin</div><div class="gate-body">Beyond the 10% net profit gate, the revenue tier bonus additionally requires ≥ 18% gross margin. Prevents chasing revenue at the expense of profitability — especially critical when subbed work is in the mix.</div></div>
+      </div>
+      <div class="gate-item">
+        <div class="gate-icon">📅</div>
+        <div><div class="gate-title">Annual measurement, paid Q1 of following year</div><div class="gate-body">Measured on calendar or fiscal year. Paid within 45 days of year-end financials. Keeps Taylor focused long-term, not month to month.</div></div>
+      </div>
+      <div class="gate-item">
+        <div class="gate-icon">✅</div>
+        <div><div class="gate-title">Must be active employee at time of payout</div><div class="gate-body">Standard clause. No pro-ration for partial years unless mutually agreed (e.g., mid-year start date).</div></div>
+      </div>
+      <div class="gate-item">
+        <div class="gate-icon">📈</div>
+        <div><div class="gate-title">Targets reset annually with mutual agreement</div><div class="gate-body">Review thresholds each year-end. If division grows to $12M, revenue tiers should scale accordingly. Don't let this become an entitlement.</div></div>
+      </div>
+      <div class="gate-item">
+        <div class="gate-icon">⚠</div>
+        <div><div class="gate-title">Safety override clause</div><div class="gate-body">Any fatality or OSHA citation voids safety bonus component regardless of recordable count. This is non-negotiable and should be documented in the comp agreement.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: MARKET -->
+  <div id="tab-market" class="tab-panel">
+    <div style="margin-bottom:1.5rem">
+      <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px">Market comp benchmarks — Field Operations Manager, utility lining/rehab</div>
+      <div class="comp-bar-row">
+        <div class="comp-bar-label">25th pct</div>
+        <div class="comp-bar-track"><div class="comp-bar-fill" style="width:55%;background:var(--bg4);color:var(--text2)">$95K–$105K</div></div>
+        <div class="comp-bar-val" style="color:var(--text2)">$100K</div>
+      </div>
+      <div class="comp-bar-row">
+        <div class="comp-bar-label" style="color:var(--red)">Taylor today</div>
+        <div class="comp-bar-track"><div class="comp-bar-fill" style="width:55%;background:rgba(232,90,74,0.25);color:var(--red)">$100,000</div></div>
+        <div class="comp-bar-val" style="color:var(--red)">Below market</div>
+      </div>
+      <div class="comp-bar-row">
+        <div class="comp-bar-label">50th pct (market)</div>
+        <div class="comp-bar-track"><div class="comp-bar-fill" style="width:72%;background:rgba(74,158,232,0.2);color:var(--blue)">$115K–$125K</div></div>
+        <div class="comp-bar-val" style="color:var(--blue)">$120K</div>
+      </div>
+      <div class="comp-bar-row">
+        <div class="comp-bar-label" style="color:var(--green)">Taylor target</div>
+        <div class="comp-bar-track"><div class="comp-bar-fill" style="width:75%;background:rgba(77,189,138,0.2);color:var(--green)">$118K–$125K</div></div>
+        <div class="comp-bar-val" style="color:var(--green)">Recommended</div>
+      </div>
+      <div class="comp-bar-row">
+        <div class="comp-bar-label">75th pct (senior)</div>
+        <div class="comp-bar-track"><div class="comp-bar-fill" style="width:90%;background:var(--bg4);color:var(--text2)">$130K–$145K</div></div>
+        <div class="comp-bar-val" style="color:var(--text2)">$135K</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><div class="row-left"><div class="row-name">Why the upper range is defensible</div><div class="row-sub">6 active crews, $8.5M revenue, sub coordination, Walmart CCTV potential — this is a senior FOM scope, not a mid-level foreman role.</div></div></div>
+      <div class="row"><div class="row-left"><div class="row-name">Cost of losing him</div><div class="row-sub">Finding and onboarding a capable FOM in this space takes 3–5 months minimum and costs $20–40K in recruiting and lost efficiency. A $20–25K raise now is a fraction of that.</div></div></div>
+      <div class="row"><div class="row-left"><div class="row-name">How to have the conversation</div><div class="row-sub">Don't wait for him to bring it up. Lead with it: acknowledge the slow period, the surge ahead, and that you recognize he's been underpaid. Connect the adjustment to the opportunity — make it feel like an investment in him, not a reactive counter-offer.</div></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- P&L SCENARIO MODEL -->
+<section id="pnl" class="reveal">
+  <div class="section-header">
+    <div class="section-number">05 — P&L Scenario Model</div>
+    <div class="section-title">Monthly P&L builder</div>
+    <div class="section-desc">April actuals loaded as baseline. Slide any variable line to model a month — all outputs update live. Fixed lines are shown for reference but cannot be adjusted.</div>
+  </div>
+
+  <!-- LIVE OUTPUT CARDS -->
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card" id="pnl-profit-card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Division profit (before shared)</div>
+      <div style="font-family:var(--font-display);font-size:28px" id="pnl-profit-val">$63,804</div>
+      <div style="font-size:12px;margin-top:4px" id="pnl-profit-pct">8.5% margin</div>
+    </div>
+    <div class="card" id="pnl-aftershared-card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Profit after 6.8% shared cost</div>
+      <div style="font-family:var(--font-display);font-size:28px" id="pnl-after-val">-$62,778</div>
+      <div style="font-size:12px;margin-top:4px" id="pnl-after-pct">-8.3% after shared</div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px">OH payroll % of revenue</div>
+      <div style="font-family:var(--font-display);font-size:28px" id="pnl-ohpct-val">10.4%</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px" id="pnl-ohpct-sub">$78,151 / $753,468</div>
+    </div>
+  </div>
+
+  <!-- REVENUE SLIDER (special — wider range) -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Revenue</div>
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:13px;font-weight:500;color:var(--text);width:200px;flex-shrink:0">Monthly Revenue</div>
+      <input type="range" min="400000" max="1500000" step="5000" value="753468" id="pnl-rev" oninput="calcPnl()" style="flex:1">
+      <div style="text-align:right;flex-shrink:0;width:160px">
+        <div style="font-size:14px;font-weight:500;color:var(--text)" id="pnl-rev-val">$753,468</div>
+        <div style="font-size:11px;color:var(--text3)" id="pnl-rev-pct">April baseline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIRECT COST SLIDERS -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Direct costs <span style="font-weight:400;text-transform:none;letter-spacing:0">(variable)</span></div>
+  <div class="card" style="margin-bottom:1rem" id="pnl-direct-card">
+
+    <div class="pnl-row" data-id="fieldpay" data-base="114845" data-min="60000" data-max="220000" data-label="Field Payroll" data-note="Variable by field activity">
+    </div>
+    <div class="pnl-row" data-id="materials" data-base="205503" data-min="100000" data-max="350000" data-label="Lining Materials" data-note="High April due to ordering">
+    </div>
+    <div class="pnl-row" data-id="subcontract" data-base="1920" data-min="0" data-max="300000" data-label="Contract Services (Subs)" data-note="Will increase significantly in new model">
+    </div>
+    <div class="pnl-row" data-id="travel" data-base="36993" data-min="15000" data-max="70000" data-label="Travel Expense" data-note="Variable, unlikely to exceed range">
+    </div>
+  </div>
+
+  <!-- OVERHEAD COST SLIDERS -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Overhead costs <span style="font-weight:400;text-transform:none;letter-spacing:0">(variable)</span></div>
+  <div class="card" style="margin-bottom:1rem">
+
+    <div class="pnl-row" data-id="ohpay" data-base="78151" data-min="55000" data-max="120000" data-label="Overhead Payroll" data-note="Incl. shop time — lower on busy months">
+    </div>
+    <div class="pnl-row" data-id="vehiclerent" data-base="48567" data-min="30000" data-max="80000" data-label="Vehicle Rental" data-note="Fairly steady, rises with volume">
+    </div>
+    <div class="pnl-row" data-id="maintequip" data-base="30981" data-min="10000" data-max="65000" data-label="Maint & Repair — Equipment" data-note="Variable">
+    </div>
+    <div class="pnl-row" data-id="machinerent" data-base="21471" data-min="5000" data-max="55000" data-label="Machine Rental" data-note="Variable">
+    </div>
+    <div class="pnl-row" data-id="supplies" data-base="7168" data-min="2000" data-max="20000" data-label="Materials & Supplies" data-note="Variable">
+    </div>
+    <div class="pnl-row" data-id="maintruck" data-base="25186" data-min="8000" data-max="55000" data-label="Maint & Repair — Trucks" data-note="Variable">
+    </div>
+    <div class="pnl-row" data-id="gas" data-base="45384" data-min="20000" data-max="90000" data-label="Gasoline" data-note="Ballooned with global gas prices">
+    </div>
+  </div>
+
+  <!-- FIXED LINES (display only) -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Fixed / low-variable costs <span style="font-weight:400;text-transform:none;letter-spacing:0">(reference only)</span></div>
+  <div class="card" style="margin-bottom:1.5rem;opacity:0.7">
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px">
+      <div><span style="color:var(--text)">Utilities &amp; Building</span> <span style="color:var(--text3);font-size:11px;margin-left:8px">Fixed</span></div>
+      <div style="color:var(--text2)">$5,800 / mo</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px">
+      <div><span style="color:var(--text)">Customer Property Damage / Entertainment / Tech</span> <span style="color:var(--text3);font-size:11px;margin-left:8px">Variable but near zero</span></div>
+      <div style="color:var(--text2)">$0 (April)</div>
+    </div>
+  </div>
+
+  <!-- FULL P&L SUMMARY -->
+  <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Live P&L summary</div>
+  <div class="card">
+    <table class="oh-table" id="pnl-summary-table">
+      <tbody id="pnl-summary-body"></tbody>
+    </table>
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-brand">Lining Division Playbook</div>
+  <div class="footer-note">Internal use only · Built for the $8.5M surge</div>
+</footer>
+
+<script>
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function switchTab(id) {
+    document.querySelectorAll('#bonus .tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#bonus .tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+  /* ---- OVERHEAD SALARY CALCULATOR ---- */
+  // Fixed monthly payroll: named salaried + Charles + Danny
+  // Rusty $10,417 + Taylor $9,833 + Riley $11,667 + Veronica $5,417 + Dom $5,833 + Charles $5,850 + Danny $7,410
+  var OH_FIXED = 56427;
+
+  function fmtK(n) {
+    if (Math.abs(n) >= 1000000) return '$' + (n/1000000).toFixed(2).replace(/\.?0+$/,'') + 'M';
+    if (Math.abs(n) >= 1000) return '$' + Math.round(n/1000) + 'K';
+    return '$' + Math.round(n);
+  }
+  function fmtD(n) { return '$' + Math.round(n).toLocaleString(); }
+
+  function pctColor(p) {
+    if (p <= 8)  return '#4DBD8A';
+    if (p <= 11) return '#4A9EE8';
+    if (p <= 14) return '#E8A832';
+    return '#E85A4A';
+  }
+  function pctSignal(p) {
+    if (p <= 8)  return '✓ Excellent leverage on fixed cost';
+    if (p <= 11) return '✓ Healthy — well within target range';
+    if (p <= 14) return '⚠ Acceptable — monitor as volume grows';
+    return '⚠ Elevated — low revenue month effect';
+  }
+
+  function calcOH() {
+    var mo    = parseInt(document.getElementById('oh-rev-slider').value);
+    var bPct  = parseFloat(document.getElementById('oh-bench-slider').value);
+    var ann   = mo * 12;
+    var bench = mo * (bPct / 100);
+    var total = OH_FIXED + bench;
+    var pct   = (total / mo) * 100;
+
+    document.getElementById('oh-rev-val').textContent   = fmtK(mo) + ' / mo';
+    document.getElementById('oh-annual-val').textContent = fmtK(ann);
+    document.getElementById('oh-bench-val').textContent  = bPct.toFixed(1) + '%';
+
+    document.getElementById('oh-bench-mo').textContent  = fmtD(bench);
+    document.getElementById('oh-bench-ann').textContent = fmtD(bench * 12);
+    document.getElementById('oh-total-mo').textContent  = fmtD(total);
+    document.getElementById('oh-total-ann').textContent = fmtK(total * 12);
+
+    document.getElementById('oh-card-monthly').textContent    = fmtK(mo);
+    document.getElementById('oh-card-annual-sub').textContent = fmtK(ann) + ' annually';
+    document.getElementById('oh-card-fixed').textContent      = fmtK(OH_FIXED);
+    document.getElementById('oh-card-payroll').textContent    = fmtK(total);
+    var pctEl = document.getElementById('oh-card-pct');
+    pctEl.textContent = pct.toFixed(1) + '%';
+    pctEl.style.color = pctColor(pct);
+    document.getElementById('oh-pct-signal').textContent = pctSignal(pct);
+
+    // Insight box
+    var iBox = document.getElementById('oh-insight-box');
+    var iTitle = document.getElementById('oh-insight-title');
+    var iBody  = document.getElementById('oh-insight-body');
+    if (pct <= 8) {
+      iBox.style.borderLeftColor = '#4DBD8A'; iBox.style.background = 'rgba(77,189,138,0.08)';
+      iTitle.textContent = 'Strong leverage — overhead well-absorbed';
+      iBody.textContent  = 'At ' + fmtK(mo) + '/mo your fixed OH payroll (' + fmtD(OH_FIXED) + '/mo) is only ' + pct.toFixed(1) + '% of revenue. The team cost is well-leveraged against the volume you\'re running.';
+    } else if (pct <= 11) {
+      iBox.style.borderLeftColor = '#4A9EE8'; iBox.style.background = 'var(--blue-dim)';
+      iTitle.textContent = 'Healthy range — on target';
+      iBody.textContent  = 'Fixed payroll of ' + fmtD(OH_FIXED) + '/mo sits at ' + pct.toFixed(1) + '% of revenue. Bench time of ' + bPct + '% is manageable. Every dollar of revenue growth above ' + fmtK(mo) + ' compresses this further automatically.';
+    } else if (pct <= 14) {
+      iBox.style.borderLeftColor = '#E8A832'; iBox.style.background = 'var(--amber-dim)';
+      iTitle.textContent = 'Watch the bench time';
+      iBody.textContent  = 'At ' + pct.toFixed(1) + '% the rate is acceptable but bench time (' + bPct + '% = ' + fmtD(bench) + '/mo) is the variable to manage. Getting crews billable faster directly reduces this — no salary changes required.';
+    } else {
+      iBox.style.borderLeftColor = '#E85A4A'; iBox.style.background = 'var(--red-dim)';
+      iTitle.textContent = 'Low-revenue month effect — not a structural problem';
+      iBody.textContent  = 'At ' + pct.toFixed(1) + '% overhead looks elevated, but your fixed payroll (' + fmtD(OH_FIXED) + '/mo) doesn\'t change — this is purely a revenue denominator issue. Getting back to ' + fmtK(Math.round(OH_FIXED / 0.10)) + '/mo revenue brings the fixed portion under 10% automatically.';
+    }
+
+    // Compression bars
+    var milestones = [500000, 650000, 753468, 900000, 1000000, 1083333, 1250000, 1500000];
+    var mLabels    = ['$500K/mo', '$650K/mo', '$753K (Apr)', '$900K/mo', '$1.0M/mo', '$1.08M ($13M/yr)', '$1.25M ($15M/yr)', '$1.5M ($18M/yr)'];
+    var barsHtml = '';
+    milestones.forEach(function(m, i) {
+      var bm = m * (bPct / 100);
+      var tm = OH_FIXED + bm;
+      var p  = (tm / m) * 100;
+      var barW = Math.min(p / 18 * 100, 100);
+      var isActive = Math.abs(m - mo) < 26000;
+      barsHtml += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
+      barsHtml += '<div style="font-size:12px;color:' + (isActive ? 'var(--text)' : 'var(--text2)') + ';width:170px;flex-shrink:0;font-weight:' + (isActive ? '600':'400') + '">' + mLabels[i] + (isActive ? ' ◀' : '') + '</div>';
+      barsHtml += '<div style="flex:1;background:var(--bg4);border-radius:3px;height:22px;overflow:hidden">';
+      barsHtml += '<div style="width:' + barW + '%;height:100%;background:' + pctColor(p) + ';border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:500;color:#fff;transition:width 0.3s">' + (barW > 15 ? p.toFixed(1) + '%' : '') + '</div>';
+      barsHtml += '</div>';
+      barsHtml += '<div style="font-size:13px;font-weight:600;color:' + pctColor(p) + ';width:46px;text-align:right">' + p.toFixed(1) + '%</div>';
+      barsHtml += '</div>';
+    });
+    document.getElementById('compression-bars').innerHTML = barsHtml;
+
+    // Scenario table
+    var sMilestones = [500000, 600000, 708333, 753468, 900000, 1000000, 1083333, 1250000, 1500000];
+    var sLabels     = ['$500K', '$600K', '$708K ($8.5M/yr)', '$753K (Apr)', '$900K', '$1.0M ($12M/yr)', '$1.08M ($13M/yr)', '$1.25M ($15M/yr)', '$1.5M ($18M/yr)'];
+    var rowsHtml = '';
+    sMilestones.forEach(function(m, i) {
+      var bm = m * (bPct / 100);
+      var tm = OH_FIXED + bm;
+      var p  = (tm / m) * 100;
+      var isActive = Math.abs(m - mo) < 26000;
+      var bg = isActive ? 'background:rgba(74,158,232,0.07);' : '';
+      rowsHtml += '<tr style="' + bg + '">';
+      rowsHtml += '<td style="font-weight:' + (isActive ? '600':'400') + '">' + sLabels[i] + (isActive ? ' ◀' : '') + '</td>';
+      rowsHtml += '<td>' + fmtK(m * 12) + '</td>';
+      rowsHtml += '<td>' + fmtD(OH_FIXED) + '</td>';
+      rowsHtml += '<td>' + fmtD(bm) + '</td>';
+      rowsHtml += '<td style="font-weight:500">' + fmtD(tm) + '</td>';
+      rowsHtml += '<td style="font-weight:600;color:' + pctColor(p) + '">' + p.toFixed(1) + '%</td>';
+      rowsHtml += '</tr>';
+    });
+    document.getElementById('oh-scenario-rows').innerHTML = rowsHtml;
+  }
+
+  document.getElementById('oh-rev-slider').addEventListener('input', calcOH);
+  document.getElementById('oh-bench-slider').addEventListener('input', calcOH);
+  calcOH();
+
+  /* ---- TAYLOR CALCULATOR ---- */
+  function calcBonus() {
+    var rev = parseInt(document.getElementById('rev-slider').value);
+    var profit = parseInt(document.getElementById('t-profit-slider').value);
+    var util = parseInt(document.getElementById('util-slider').value);
+    var safety = parseInt(document.getElementById('safety-slider').value);
+    var retention = document.getElementById('retention-check').checked;
+
+    document.getElementById('rev-val').textContent = '$' + (rev / 1000000).toFixed(1) + 'M';
+    document.getElementById('t-profit-val').textContent = profit + '%';
+    document.getElementById('util-val').textContent = util + '%';
+    document.getElementById('safety-val').textContent = safety;
+
+    var gateWarn = document.getElementById('t-profit-gate-warn');
+    var gateMet = profit >= 10;
+    gateWarn.style.display = gateMet ? 'none' : 'block';
+
+    var revBonus = 0, utilBonus = 0, safetyBonus = 0, retentionBonus = 0;
+    if (gateMet) {
+      if (rev >= 9500000) revBonus = 12000;
+      else if (rev >= 8000000) revBonus = 7200;
+      else if (rev >= 6500000) revBonus = 3000;
+      utilBonus = util >= 85 ? 2700 : (util >= 75 ? 1350 : 0);
+      safetyBonus = safety === 0 ? 2700 : (safety <= 1 ? 1350 : 0);
+      retentionBonus = retention ? 2600 : 0;
+    }
+
+    var total = revBonus + utilBonus + safetyBonus + retentionBonus;
+    var totalComp = 118000 + total;
+    var pct = Math.round(total / 20000 * 100);
+
+    document.getElementById('total-bonus').textContent = fmt(total);
+    document.getElementById('total-comp-line').textContent = 'Total comp: ' + fmt(totalComp);
+    document.getElementById('bonus-pct').textContent = pct + '%';
+    document.getElementById('bonus-bar').style.width = Math.min(pct, 100) + '%';
+    document.getElementById('bonus-bar').style.background = !gateMet ? '#E85A4A' : pct >= 75 ? '#4DBD8A' : pct >= 40 ? '#4A9EE8' : '#5C5C57';
+    document.getElementById('rev-component').textContent = fmt(revBonus);
+    document.getElementById('util-component').textContent = fmt(utilBonus);
+    document.getElementById('safety-component').textContent = fmt(safetyBonus);
+    document.getElementById('retention-component').textContent = fmt(retentionBonus);
+    document.getElementById('total-comp-val').textContent = fmt(totalComp);
+  }
+
+  document.getElementById('rev-slider').addEventListener('input', calcBonus);
+  document.getElementById('t-profit-slider').addEventListener('input', calcBonus);
+  document.getElementById('util-slider').addEventListener('input', calcBonus);
+  document.getElementById('safety-slider').addEventListener('input', calcBonus);
+  document.getElementById('retention-check').addEventListener('change', calcBonus);
+  calcBonus();
+
+  /* ---- P&L SCENARIO CALCULATOR ---- */
+  var PNL_FIXED_UTIL = 5800;
+  var PNL_FIXED_OTHER = 0;
+
+  function buildPnlRows() {
+    document.querySelectorAll('.pnl-row').forEach(function(row) {
+      var id    = row.dataset.id;
+      var base  = parseFloat(row.dataset.base);
+      var min   = parseFloat(row.dataset.min);
+      var max   = parseFloat(row.dataset.max);
+      var label = row.dataset.label;
+      var note  = row.dataset.note;
+      row.innerHTML =
+        '<div style="padding:12px 0;border-bottom:0.5px solid var(--border)">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:500;color:var(--text)">' + label + '</div>' +
+              '<div style="font-size:11px;color:var(--text3);margin-top:2px">' + note + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;flex-shrink:0;margin-left:16px">' +
+              '<div style="font-size:14px;font-weight:500;color:var(--text)" id="pnl-val-' + id + '">$' + Math.round(base).toLocaleString() + '</div>' +
+              '<div style="font-size:11px;color:var(--text3)" id="pnl-pct-' + id + '">April baseline</div>' +
+            '</div>' +
+          '</div>' +
+          '<input type="range" min="' + min + '" max="' + max + '" step="500" value="' + base + '" ' +
+            'id="pnl-slider-' + id + '" oninput="calcPnl()" ' +
+            'style="width:100%;-webkit-appearance:none;appearance:none;height:4px;background:var(--bg4);border-radius:2px;outline:none;cursor:pointer">' +
+          '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px">' +
+            '<span>' + fmtK(min) + '</span><span>April: $' + Math.round(base).toLocaleString() + '</span><span>' + fmtK(max) + '</span>' +
+          '</div>' +
+        '</div>';
+    });
+    // Fix last border
+    var rows = document.querySelectorAll('.pnl-row > div');
+    if (rows.length) rows[rows.length-1].style.borderBottom = 'none';
+  }
+
+  function calcPnl() {
+    var rev        = parseInt(document.getElementById('pnl-rev').value);
+    var fieldpay   = parseInt(document.getElementById('pnl-slider-fieldpay').value);
+    var materials  = parseInt(document.getElementById('pnl-slider-materials').value);
+    var subcontract= parseInt(document.getElementById('pnl-slider-subcontract').value);
+    var travel     = parseInt(document.getElementById('pnl-slider-travel').value);
+    var ohpay      = parseInt(document.getElementById('pnl-slider-ohpay').value);
+    var vehiclerent= parseInt(document.getElementById('pnl-slider-vehiclerent').value);
+    var maintequip = parseInt(document.getElementById('pnl-slider-maintequip').value);
+    var machinerent= parseInt(document.getElementById('pnl-slider-machinerent').value);
+    var supplies   = parseInt(document.getElementById('pnl-slider-supplies').value);
+    var maintruck  = parseInt(document.getElementById('pnl-slider-maintruck').value);
+    var gas        = parseInt(document.getElementById('pnl-slider-gas').value);
+
+    var baselines = {
+      rev: 753468, fieldpay: 114845, materials: 205503, subcontract: 1920,
+      travel: 36993, ohpay: 78151, vehiclerent: 48567, maintequip: 30981,
+      machinerent: 21471, supplies: 7168, maintruck: 25186, gas: 45384
+    };
+
+    // Update each slider label
+    function updateLabel(id, val) {
+      document.getElementById('pnl-val-' + id).textContent = '$' + Math.round(val).toLocaleString();
+      var diff = ((val - baselines[id]) / baselines[id] * 100);
+      var sign = diff >= 0 ? '+' : '';
+      var color = id === 'rev' ? (diff >= 0 ? '#4DBD8A' : '#E85A4A') : (diff <= 0 ? '#4DBD8A' : '#E85A4A');
+      document.getElementById('pnl-pct-' + id).textContent = sign + diff.toFixed(1) + '% vs April';
+      document.getElementById('pnl-pct-' + id).style.color = color;
+    }
+
+    // Revenue label
+    var revDiff = ((rev - baselines.rev) / baselines.rev * 100);
+    document.getElementById('pnl-rev-val').textContent = '$' + Math.round(rev).toLocaleString();
+    document.getElementById('pnl-rev-pct').textContent = (revDiff >= 0 ? '+' : '') + revDiff.toFixed(1) + '% vs April  ·  $' + Math.round(rev*12/1000000*10)/10 + 'M / yr';
+    document.getElementById('pnl-rev-pct').style.color = revDiff >= 0 ? '#4DBD8A' : '#E85A4A';
+
+    updateLabel('fieldpay',    fieldpay);
+    updateLabel('materials',   materials);
+    updateLabel('subcontract', subcontract);
+    updateLabel('travel',      travel);
+    updateLabel('ohpay',       ohpay);
+    updateLabel('vehiclerent', vehiclerent);
+    updateLabel('maintequip',  maintequip);
+    updateLabel('machinerent', machinerent);
+    updateLabel('supplies',    supplies);
+    updateLabel('maintruck',   maintruck);
+    updateLabel('gas',         gas);
+
+    var totalCosts  = fieldpay + materials + subcontract + travel +
+                      ohpay + vehiclerent + maintequip + machinerent +
+                      supplies + maintruck + gas + PNL_FIXED_UTIL + PNL_FIXED_OTHER;
+    var divProfit   = rev - totalCosts;
+    var divMargin   = divProfit / rev * 100;
+    var sharedCost  = rev * 0.068;
+    var afterShared = divProfit - sharedCost;
+    var afterPct    = afterShared / rev * 100;
+    var ohPct       = ohpay / rev * 100;
+
+    // Output cards
+    var profitEl = document.getElementById('pnl-profit-val');
+    profitEl.textContent = (divProfit < 0 ? '-$' : '$') + Math.abs(Math.round(divProfit)).toLocaleString();
+    profitEl.style.color = divProfit >= 0 ? '#4DBD8A' : '#E85A4A';
+    document.getElementById('pnl-profit-pct').textContent = divMargin.toFixed(1) + '% margin';
+    document.getElementById('pnl-profit-pct').style.color = divMargin >= 10 ? '#4DBD8A' : divMargin >= 5 ? '#E8A832' : '#E85A4A';
+    document.getElementById('pnl-profit-card').style.borderColor = divProfit >= 0 ? 'rgba(77,189,138,0.3)' : 'rgba(232,90,74,0.3)';
+
+    var afterEl = document.getElementById('pnl-after-val');
+    afterEl.textContent = (afterShared < 0 ? '-$' : '$') + Math.abs(Math.round(afterShared)).toLocaleString();
+    afterEl.style.color = afterShared >= 0 ? '#4DBD8A' : '#E85A4A';
+    document.getElementById('pnl-after-pct').textContent = afterPct.toFixed(1) + '% after shared';
+    document.getElementById('pnl-after-pct').style.color = afterShared >= 0 ? '#4DBD8A' : '#E85A4A';
+    document.getElementById('pnl-aftershared-card').style.borderColor = afterShared >= 0 ? 'rgba(77,189,138,0.3)' : 'rgba(232,90,74,0.3)';
+
+    document.getElementById('pnl-ohpct-val').textContent = ohPct.toFixed(1) + '%';
+    document.getElementById('pnl-ohpct-val').style.color = ohPct <= 8 ? '#4DBD8A' : ohPct <= 11 ? '#4A9EE8' : ohPct <= 14 ? '#E8A832' : '#E85A4A';
+    document.getElementById('pnl-ohpct-sub').textContent = '$' + Math.round(ohpay).toLocaleString() + ' / $' + Math.round(rev).toLocaleString();
+
+    // P&L summary table
+    var rows = [
+      { label: 'Revenue',                  val: rev,          type: 'revenue' },
+      { label: '— Field Payroll',          val: -fieldpay,    type: 'direct'  },
+      { label: '— Lining Materials',       val: -materials,   type: 'direct'  },
+      { label: '— Contract Services (Subs)',val: -subcontract, type: 'direct'  },
+      { label: '— Travel Expense',         val: -travel,      type: 'direct'  },
+      { label: 'Gross after direct costs', val: rev - fieldpay - materials - subcontract - travel, type: 'subtotal' },
+      { label: '— Overhead Payroll',       val: -ohpay,       type: 'overhead'},
+      { label: '— Vehicle Rental',         val: -vehiclerent, type: 'overhead'},
+      { label: '— Maint & Repair (Equip)', val: -maintequip,  type: 'overhead'},
+      { label: '— Machine Rental',         val: -machinerent, type: 'overhead'},
+      { label: '— Materials & Supplies',   val: -supplies,    type: 'overhead'},
+      { label: '— Maint & Repair (Trucks)',val: -maintruck,   type: 'overhead'},
+      { label: '— Gasoline',               val: -gas,         type: 'overhead'},
+      { label: '— Utilities & Building',   val: -PNL_FIXED_UTIL, type: 'fixed'},
+      { label: 'Division profit',          val: divProfit,    type: 'profit'  },
+      { label: '— Shared cost (6.8%)',     val: -sharedCost,  type: 'overhead'},
+      { label: 'Profit after shared cost', val: afterShared,  type: divProfit < 0 ? 'loss' : afterShared < 0 ? 'loss' : 'profit' },
+    ];
+
+    var html = '';
+    rows.forEach(function(r) {
+      var isSubtotal = r.type === 'subtotal' || r.type === 'profit' || r.type === 'loss';
+      var color = r.type === 'revenue' ? 'var(--text)' :
+                  r.type === 'profit'  ? '#4DBD8A' :
+                  r.type === 'loss'    ? '#E85A4A' :
+                  r.type === 'subtotal'? '#4A9EE8' :
+                  r.type === 'fixed'   ? 'var(--text3)' : 'var(--text2)';
+      var weight = isSubtotal ? '600' : '400';
+      var bg = isSubtotal ? 'background:var(--bg4);' : '';
+      var pctOfRev = (r.val / rev * 100);
+      var pctStr = r.type !== 'revenue' ? '(' + (pctOfRev >= 0 ? '+' : '') + pctOfRev.toFixed(1) + '%)' : '(100%)';
+      html += '<tr style="' + bg + '">';
+      html += '<td style="color:' + color + ';font-weight:' + weight + ';padding-left:' + (r.label.startsWith('—') ? '20px' : '12px') + '">' + r.label.replace('—','') + '</td>';
+      html += '<td style="color:' + color + ';font-weight:' + weight + ';text-align:right">' +
+              (r.val < 0 ? '-$' : '$') + Math.abs(Math.round(r.val)).toLocaleString() + '</td>';
+      html += '<td style="color:var(--text3);font-size:11px;text-align:right">' + pctStr + '</td>';
+      html += '</tr>';
+    });
+    document.getElementById('pnl-summary-body').innerHTML = html;
+  }
+
+  // Build slider rows then calculate
+  buildPnlRows();
+  calcPnl();
+
+  /* ---- NAV + REVEAL ---- */
+  var sections = ['overview','overhead','team','subwork','bonus','pnl'];
+  var links = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', function() {
+    var pos = window.scrollY + 80;
+    sections.forEach(function(id, i) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= pos) {
+        links.forEach(l => l.classList.remove('active'));
+        if (links[i]) links[i].classList.add('active');
+      }
+    });
+  });
+
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(function(r) { observer.observe(r); });
+</script>
+</body>
+</html>
